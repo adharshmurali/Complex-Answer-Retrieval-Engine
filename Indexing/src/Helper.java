@@ -13,6 +13,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory; 
 import org.apache.lucene.util.Version;
@@ -72,14 +73,16 @@ public class Helper   {
 	
 	public void searcher(String query)throws Exception{
 		// Opening the index using the FSdirectory object
-		//IndexReader idx=FSDirectory.open(Paths.get("F:/new_file") );
-		//IndexReader idx=new IndexReader();
-		IndexSearcher is=new IndexSearcher();
+		Directory idx=FSDirectory.open(Paths.get("F:/new_file") );
+		IndexReader idr=DirectoryReader.open(idx);
+		IndexSearcher is=new IndexSearcher(idr);
+		//Now setting the similarity to BM25 search similarity.
+		is.setSimilarity(new BM25Similarity());
 		// Now opening the query parser for the application
-		QueryParser qp=new QueryParser("contents",new StandardAnalyzer());
+		QueryParser qp=new QueryParser("text",new StandardAnalyzer());
 		Query q=qp.parse(query);
 		long start = System.currentTimeMillis();
-		TopDocs hits = is.search(query, 10);
+		TopDocs hits = is.search(q, 10);
 		long end = System.currentTimeMillis();
 		System.err.println("Found " + hits.totalHits +
 		" document(s) (in " + (end - start) +
@@ -87,9 +90,9 @@ public class Helper   {
 		q + "':");
 		for(ScoreDoc scoreDoc : hits.scoreDocs) {
 		Document doc = is.doc(scoreDoc.doc);
-		System.out.println(doc.get("fullpath"));
+		System.out.println(doc.get("text"));
 		}
-		is.close();
+		idx.close();
 	}
 	
 	

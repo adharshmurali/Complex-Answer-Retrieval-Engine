@@ -31,7 +31,8 @@ public class MainActivity {
 		
 		//System.out.print(g.);
 	}
-		
+	//Search for the term candy
+		h.searcher("making");
 	}
 	
 }
