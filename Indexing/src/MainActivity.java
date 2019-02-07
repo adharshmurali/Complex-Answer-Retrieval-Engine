@@ -4,10 +4,10 @@
  * action.
  */
 import edu.unh.cs.treccar_v2.Data;
-
 import edu.unh.cs.treccar_v2.read_data.CborFileTypeException;
 import edu.unh.cs.treccar_v2.read_data.CborRuntimeException;
 import edu.unh.cs.treccar_v2.read_data.DeserializeData;
+
 import java.io.FileInputStream;
 import java.io.File;
 public class MainActivity {
@@ -17,16 +17,21 @@ public class MainActivity {
 		// The file is read using the inputstream and the data from the input stream is to desearlized for the analysis
 		//Data.Page g = null;
 		FileInputStream fs =new FileInputStream(new File("F:/TREC CAR/benchmarkY1-test.v2.0.tar/benchmarkY1-test.v2.0/benchmarkY1/benchmarkY1-test/test.pages.cbor-paragraphs.cbor"));
-		// Now deserialising the data from the stream
+		// Now deserializing the data from the stream
+		Helper h=new Helper();
+		if (h.find()){
 		for (Data.Paragraph p: DeserializeData.iterableParagraphs(fs)){
 			
 		//For every paragraph send the paragraph Id and the paragraph text to which
 			// THe index is to be created.
-			Helper h=new Helper();
+			
 			h.Indexer(p.getParaId(), p.getTextOnly());
+			
 	}
+		
 		//System.out.print(g.);
 	}
-
+		
+	}
 	
 }
